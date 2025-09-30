@@ -8,8 +8,7 @@ USER root
 ENV LANG=zh_CN.UTF-8
 ENV LC_ALL=zh_CN.UTF-8
 
-# 配置apt镜像源并安装必要包
-RUN sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list.d/debian.sources
+# 安装必要包
 RUN apt-get update && \
     apt-get install -y git fonts-wqy-zenhei locales curl build-essential && \
     echo "zh_CN.UTF-8 UTF-8" > /etc/locale.gen && \
@@ -21,27 +20,15 @@ RUN apt-get update && \
 # 切换回非root用户
 USER 1000
 
-# 配置uv镜像源
-RUN mkdir -p $HOME/.config/uv
-RUN tee $HOME/.config/uv/uv.toml <<-'EOF'
-[[index]]
-url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"
-default = true
-
-python-install-mirror = "https://python-standalone.org/mirror/astral-sh/python-build-standalone/"
-EOF
-
 # 安装 nvm
 ENV NVM_DIR=/home/coder/.nvm
 
-# 安装nvm和node，并配置npm镜像源
+# 安装nvm和node
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash && \
     bash -c "source $NVM_DIR/nvm.sh && \
-    export NVM_NODEJS_ORG_MIRROR=https://mirrors.ustc.edu.cn/node/ && \
     nvm install --lts && \
     nvm alias default \$(nvm current) && \
-    nvm use default && \
-    npm config set registry https://registry.npmmirror.com"
+    nvm use default"
 
 # 设置环境变量使 node 和 npm 全局可用
 RUN echo "export PATH=\"\$NVM_DIR/versions/node/\$(ls \$NVM_DIR/versions/node | head -1)/bin:\$PATH\"" >> ~/.bashrc
@@ -74,3 +61,26 @@ RUN tee $HOME/.local/share/code-server/User/settings.json <<-'EOF'
     "workbench.colorTheme": "One Dark Pro"
 }
 EOF
+
+# 配置镜像源（移到最后）
+USER root
+# 配置apt镜像源
+RUN sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list.d/debian.sources
+
+# 切换回非root用户
+USER 1000
+
+# 配置uv镜像源
+RUN mkdir -p $HOME/.config/uv
+RUN tee $HOME/.config/uv/uv.toml <<-'EOF'
+[[index]]
+url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"
+default = true
+
+python-install-mirror = "https://python-standalone.org/mirror/astral-sh/python-build-standalone/"
+EOF
+
+# 配置npm镜像源
+RUN bash -c "source $NVM_DIR/nvm.sh && \
+    export NVM_NODEJS_ORG_MIRROR=https://mirrors.ustc.edu.cn/node/ && \
+    npm config set registry https://registry.npmmirror.com"

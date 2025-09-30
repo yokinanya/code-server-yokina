@@ -30,6 +30,21 @@ docker run -d --name code-server -p 127.0.0.1:8080:8080 \
 
 ## 本地构建
 
+### 使用代理构建（推荐）
 ```bash
-docker build -t yokinanya/code-server-yokina:local .
+# 使用代理构建脚本
+./build-with-proxy.sh
 ```
+
+### 直接构建
+```bash
+# 本地构建（使用Dockerfile，镜像源配置在前面）
+docker build -t yokinanya/code-server-yokina:local -f ./Dockerfile .
+```
+
+## Dockerfile 说明
+
+项目包含两个 Dockerfile ：
+
+- `Dockerfile` : 用于本地构建，镜像源配置在前面，确保构建过程中使用国内镜像源加速
+- `Dockerfile.workflow` : 用于 GitHub Actions 构建时使用，镜像源配置在最后，避免在 CI 环境中可能出现的镜像源问题
