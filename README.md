@@ -9,21 +9,6 @@
 - 国内镜像源加速
 - 预装常用扩展
 
-## 自动构建
-
-推送到 `master` 或标签 `v*` 自动构建并推送到 GHCR 和华为云 SWR。
-
-### GitHub Secrets 配置
-
-| Secret | 说明 |
-|--------|------|
-| `HUAWEI_ACCESS_KEY` | 华为云 AK |
-| `HUAWEI_SECRET_KEY` | 华为云 SK |
-| `HUAWEI_REGION` | 区域 (如 `cn-north-4`) |
-| `HUAWEI_SWR_NAMESPACE` | SWR 组织名 |
-
-获取 AK/SK: [华为云控制台](https://console.huaweicloud.com/iam/#/mine/apiCredential)
-
 ## 使用
 
 ```bash
