@@ -2,6 +2,7 @@ FROM codercom/code-server:debian
 
 # 安装uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+COPY --from=mvdan/shfmt /bin/shfmt /bin/shfmt
 
 # 切换到root用户
 USER root
@@ -66,6 +67,7 @@ RUN code-server --install-extension shardulm94.trailing-spaces
 RUN code-server --install-extension ms-python.python
 RUN code-server --install-extension GitHub.copilot-chat
 RUN code-server --install-extension esbenp.prettier-vscode
+RUN code-server --install-extension mads-hartmann.bash-ide-vscode
 
 # 配置默认主题
 RUN mkdir -p $HOME/.local/share/code-server/User
