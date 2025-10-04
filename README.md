@@ -18,7 +18,7 @@ docker pull ghcr.io/yokinanya/code-server-yokina:latest
 # 运行
 docker run -d --name code-server -p 8080:8080 \
   -v "$HOME/.config:/home/coder/.config" \
-  -v "$HOME/.local/share/code-server:/home/coder/.local/share/code-server" \
+  -v "code-server-data:/home/coder/.local" \
   -v "$PWD:/home/coder/project" \
   -v /etc/localtime:/etc/localtime:ro \
   -u "$(id -u):$(id -g)" \
