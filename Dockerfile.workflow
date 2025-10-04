@@ -52,7 +52,6 @@ RUN code-server --install-extension yzhang.markdown-all-in-one
 RUN code-server --install-extension shd101wyy.markdown-preview-enhanced
 RUN code-server --install-extension shardulm94.trailing-spaces
 RUN code-server --install-extension ms-python.python
-RUN code-server --install-extension GitHub.copilot-chat
 RUN code-server --install-extension esbenp.prettier-vscode
 RUN code-server --install-extension mads-hartmann.bash-ide-vscode
 
